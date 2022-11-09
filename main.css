@@ -3,6 +3,7 @@
     margin: auto
 }
 
+/* Se utiliza para pintar las casillas con movimientos posibles*/
 .highlight{
     background-color: yellowgreen!important;
     transition: background-color 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
