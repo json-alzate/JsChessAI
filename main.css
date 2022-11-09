@@ -1,0 +1,20 @@
+#config, #board {
+    width: 300px;
+    margin: auto
+}
+
+.highlight{
+    background-color: yellowgreen!important;
+    transition: background-color 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+#history {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    width: 200px;
+}
+#history span {
+    flex: 0 0 40%;
+
+}
