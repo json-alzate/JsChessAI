@@ -42,6 +42,9 @@ let onDrop = (from, to) => {
 }
 
 //----
+
+
+
 let makeBestMove = () => {
     let bestMove = findBestMove();
     if (bestMove) {
@@ -50,9 +53,79 @@ let makeBestMove = () => {
     }
 }
 
-let findBestMove = () => {
+
+let getPieceValue = ({ type, color }) => ({
+    k: 900,
+    q: 90,
+    r: 50,
+    b: 30,
+    n: 30,
+    p: 10
+}[type] * { w: -1, b: 1 }[color]);
+
+
+let getBoardValue = (board) => {
+    return board.reduce(
+        (acc, row) => row.reduce((racc, piece) => piece ? racc + getPieceValue(piece) : racc, acc)
+        , 0);
+
+}
+
+let minimax = (depth, maximising) => {
+
+    if (depth == 0) return getBoardValue(game.board());
+
+    var fn = maximising ? Math.max : Math.min;
+    var val = maximising ? -Infinity : Infinity;
+
+    for (let move of game.moves()) {
+        game.move(move);
+        val = fn(val, minimax(depth - 1, !maximising));
+        game.undo()
+    }
+    return val;
+}
+
+
+
+
+let findBestMoveRandom = () => {
     if (game.game_over()) return alert('Game over!');
     return randomMove();
+}
+
+
+let findBestMoveBasic = () => {
+    let bestValue = -99999;
+    let bestMove = null;
+    for (let move of game.moves()) {
+        game.move(move);
+        let value = getBoardValue(game.board())
+        game.undo()
+        if (value > bestValue) {
+            bestValue = value
+            bestMove = move
+        }
+    }
+    return bestMove;
+}
+
+
+
+let findBestMove = () => {
+    let bestValue = -Infinity;
+    let bestMove = null;
+    let time = new Date();
+    for (let move of game.moves()) {
+        game.move(move);
+        let value = minimax(1, false);
+        game.undo()
+        if (value > bestValue) {
+            bestValue = value
+            bestMove = move
+        }
+    }
+    return bestMove;
 }
 
 // elige un movimiento aleatorio de los posibles movimientos
